@@ -130,3 +130,10 @@ import µb from './background.js';
     }
     return r;
 };
+
+// ajout fab
+function isFirefox(){
+    return (typeof browser !== 'undefined') && !!browser.runtime && !!browser.runtime.getBrowserInfo;
+} 
+
+export {isFirefox};

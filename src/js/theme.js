@@ -18,6 +18,7 @@
 
     Home: https://github.com/gorhill/uBlock
 */
+import { isFirefox } from "./utils.js";
 
 function getActualTheme(nominalTheme) {
     let theme = nominalTheme || 'light';
@@ -31,6 +32,11 @@ function getActualTheme(nominalTheme) {
             theme = 'light';
         }
     }
+    // ajout
+    if ( nominalTheme === 'browser' ) {
+        theme = 'browser';
+    }
+
     return theme;
 }
 
@@ -42,18 +48,29 @@ function setTheme(theme, propagate = false) {
         if ( theme === 'dark' ) {
             rootcl.add('dark');
             rootcl.remove('light');
-        } else /* if ( theme === 'light' ) */ {
+        } else if (theme === 'browser') { // Ajout
+            if (isFirefox()){
+                browser.theme.getCurrent().then(themeinfo => {
+                    console.log('themeinfo:', themeinfo);
+                });
+            }
+            /**
+             * POTENTIELLEMENT FAIRE LE CODE DE L'IMPLEMENTATION DU THÈME ICI
+             */
+            console.log("allo test browser theme");
+
+        } else {
             rootcl.add('light');
             rootcl.remove('dark');
         }
-        if ( propagate === false ) { break; }
+        if ( propagate === false ) { break; } // what is propagate?
         if ( w === w.parent ) { break; }
         w = w.parent;
         try { void w.document; } catch { return; }
     }
 }
 
-function setAccentColor(
+function setAccentColor( //what is accent
     accentEnabled,
     accentColor,
     propagate,
