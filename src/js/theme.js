@@ -18,8 +18,15 @@
 
     Home: https://github.com/gorhill/uBlock
 */
+// ajout fab
 
-// Ne pas toucher, fonction pour le mode auto
+
+function isFirefox(){
+    return (typeof browser !== 'undefined') && !!browser.runtime && !!browser.runtime.getBrowserInfo;
+} 
+
+
+// NE PAS TOUCHER, fonction pour le mode auto
 function getActualTheme(nominalTheme) {
     let theme = nominalTheme || 'light';
     if ( nominalTheme === 'auto' ) {
@@ -49,6 +56,11 @@ function setTheme(theme, propagate = false) {
             rootcl.remove('dark');
         } else if (theme === 'browser') {
             console.log("[Test Option browser]");
+            if (isFirefox()){
+                browser.theme.getCurrent().then(themeinfo => {
+                    console.log('themeinfo:', themeinfo);
+                });
+            }
         }
         if ( propagate === false ) { break; }
         if ( w === w.parent ) { break; }
