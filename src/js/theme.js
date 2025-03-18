@@ -18,13 +18,37 @@
 
     Home: https://github.com/gorhill/uBlock
 */
+
+
 // ajout fab
-
-
 function isFirefox(){
     return (typeof browser !== 'undefined') && !!browser.runtime && !!browser.runtime.getBrowserInfo;
 } 
 
+// ajout fab
+function SetBrowserMode(theme) {
+    let browserTheme = document.querySelector('browserTheme');
+
+    console.log(document.styleSheets);
+    console.log('themeinfo:', theme);
+    if ( !browserTheme ) {
+        browserTheme = document.createElement('style');
+        browserTheme.id = 'browserTheme';
+        
+        browserTheme.textContent = `
+            .browser {
+                color: ${theme.colors.popup_text};
+                background-color: ${theme.colors.popup};
+            }
+            .browser button:hover,
+            .browser input:hover {
+                background-color: ${"rgba" + theme.colors.popup_text.slice(3, theme.colors.popup_text.length - 1) + ", .17)"};
+            }
+        `;
+
+        document.head.appendChild(browserTheme);
+    }
+}
 
 // NE PAS TOUCHER, fonction pour le mode auto
 function getActualTheme(nominalTheme) {
@@ -50,18 +74,25 @@ function setTheme(theme, propagate = false) {
         const rootcl = w.document.documentElement.classList;
         if ( theme === 'dark' ) {
             rootcl.add('dark');
+            rootcl.remove('browser');
             rootcl.remove('light');
         } else if ( theme === 'light' ) {
             rootcl.add('light');
+            rootcl.remove('browser');
             rootcl.remove('dark');
+        /** Ajout Fab */
         } else if (theme === 'browser') {
             console.log("[Test Option browser]");
             if (isFirefox()){
                 browser.theme.getCurrent().then(themeinfo => {
-                    console.log('themeinfo:', themeinfo);
+                    SetBrowserMode(themeinfo);
+                    rootcl.add('browser');
+                    rootcl.remove('dark');
+                    rootcl.remove('light');
                 });
             }
         }
+        /**Fin Ajout */
         if ( propagate === false ) { break; }
         if ( w === w.parent ) { break; }
         w = w.parent;
