@@ -21,6 +21,7 @@
 import { isFirefox } from "./utils.js";
 
 function getActualTheme(nominalTheme) {
+    console.log("getTheme + allo signe de vie");
     let theme = nominalTheme || 'light';
     if ( nominalTheme === 'auto' ) {
         if ( typeof self.matchMedia === 'function' ) {
@@ -41,6 +42,7 @@ function getActualTheme(nominalTheme) {
 }
 
 function setTheme(theme, propagate = false) {
+    console.log("setTheme + allo signe de vie");
     theme = getActualTheme(theme);
     let w = self;
     for (;;) {

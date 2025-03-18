@@ -211,6 +211,8 @@ function synchronizeDOM() {
 /******************************************************************************/
 
 function changeUserSettings(name, value) {
+    console.log("settings/changeuserSettings + allo signe de vie");
+    
     vAPI.messaging.send('dashboard', {
         what: 'userSettings',
         name,
