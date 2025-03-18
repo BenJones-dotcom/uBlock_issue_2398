@@ -19,6 +19,7 @@
     Home: https://github.com/gorhill/uBlock
 */
 
+// Ne pas toucher, fonction pour le mode auto
 function getActualTheme(nominalTheme) {
     let theme = nominalTheme || 'light';
     if ( nominalTheme === 'auto' ) {
@@ -36,15 +37,18 @@ function getActualTheme(nominalTheme) {
 
 function setTheme(theme, propagate = false) {
     theme = getActualTheme(theme);
+    console.log("[Set Theme Test]");
     let w = self;
     for (;;) {
         const rootcl = w.document.documentElement.classList;
         if ( theme === 'dark' ) {
             rootcl.add('dark');
             rootcl.remove('light');
-        } else /* if ( theme === 'light' ) */ {
+        } else if ( theme === 'light' ) {
             rootcl.add('light');
             rootcl.remove('dark');
+        } else if (theme === 'browser') {
+            console.log("[Test Option browser]");
         }
         if ( propagate === false ) { break; }
         if ( w === w.parent ) { break; }
