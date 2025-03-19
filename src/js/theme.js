@@ -60,13 +60,13 @@ function SetBrowserMode(theme) {
     }
 
     browserTheme.textContent = `
-        #panes.browser {
+        .browser {
             color: ${theme.colors.popup_text} !important;
             background-color: ${theme.colors.popup} !important;
         }
 
-        #panes.browser button:hover,
-        #panes.browser input:hover {
+        .browser button:hover,
+        .browser input:hover {
             background-color: ${"rgba" + theme.colors.popup_text.slice(3, theme.colors.popup_text.length - 1) + ", .17)"} !important;
         }
     `;
@@ -110,6 +110,7 @@ function setTheme(theme, propagate = false) {
                 browser.theme.getCurrent().then(themeinfo => {
                     SetBrowserMode(themeinfo);
                     w.document.getElementById('panes').classList.add('browser');
+                    w.document.getElementById('sticky').classList.add('browser');
                 });
             }
         }
