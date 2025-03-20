@@ -26,31 +26,6 @@ function isFirefox(){
 } 
 
 // ajout fab
-//function SetBrowserMode(theme) {
-//    let browserTheme = document.querySelector('browserTheme');
-//
-//    console.log(document.styleSheets);
-//    console.log('themeinfo:', theme);
-//    if ( !browserTheme ) {
-//        browserTheme = document.createElement('style');
-//        browserTheme.id = 'browserTheme';
-//        
-//        browserTheme.textContent = `
-//            #panes.browser {
-//                color: ${theme.colors.popup_text} !important;
-//                background-color: ${theme.colors.popup} !important;
-//            }
-//
-//            #panes.browser button:hover,
-//            #panes.browser input:hover {
-//                background-color: ${"rgba" + theme.colors.popup_text.slice(3, theme.colors.popup_text.length - 1) + ", .17)"} !important;
-//            }
-//        `;
-//
-//        document.head.appendChild(browserTheme);
-//    }
-//}
-
 function SetBrowserMode(theme) {
     let browserTheme = document.querySelector('#browserTheme');
     if (!browserTheme) {
