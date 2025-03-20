@@ -19,6 +19,36 @@
     Home: https://github.com/gorhill/uBlock
 */
 
+
+// ajout fab
+function isFirefox(){
+    return (typeof browser !== 'undefined') && !!browser.runtime && !!browser.runtime.getBrowserInfo;
+} 
+
+// ajout fab
+function SetBrowserMode(theme) {
+    let browserTheme = document.querySelector('#browserTheme');
+    if (!browserTheme) {
+        browserTheme = document.createElement('style');
+        browserTheme.id = 'browserTheme';
+        document.head.appendChild(browserTheme);
+    }
+
+    browserTheme.textContent = `
+        .browser {
+            color: ${theme.colors.popup_text} !important;
+            background-color: ${theme.colors.popup} !important;
+        }
+
+        .browser button:hover,
+        .browser input:hover {
+            background-color: ${"rgba" + theme.colors.popup_text.slice(3, theme.colors.popup_text.length - 1) + ", .17)"} !important;
+        }
+    `;
+}
+
+
+// NE PAS TOUCHER, fonction pour le mode auto
 function getActualTheme(nominalTheme) {
     let theme = nominalTheme || 'light';
     if ( nominalTheme === 'auto' ) {
@@ -36,16 +66,30 @@ function getActualTheme(nominalTheme) {
 
 function setTheme(theme, propagate = false) {
     theme = getActualTheme(theme);
+    console.log("[Set Theme Test]");
     let w = self;
     for (;;) {
         const rootcl = w.document.documentElement.classList;
         if ( theme === 'dark' ) {
             rootcl.add('dark');
+            rootcl.remove('browser');
             rootcl.remove('light');
-        } else /* if ( theme === 'light' ) */ {
+        } else if ( theme === 'light' ) {
             rootcl.add('light');
+            rootcl.remove('browser');
             rootcl.remove('dark');
+        /** Ajout Fab */
+        } else if (theme === 'browser') {
+            console.log("[Test Option browser]");
+            if (isFirefox()){
+                browser.theme.getCurrent().then(themeinfo => {
+                    SetBrowserMode(themeinfo);
+                    w.document.getElementById('panes').classList.add('browser');
+                    w.document.getElementById('sticky').classList.add('browser');
+                });
+            }
         }
+        /**Fin Ajout */
         if ( propagate === false ) { break; }
         if ( w === w.parent ) { break; }
         w = w.parent;
